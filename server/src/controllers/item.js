@@ -17,7 +17,10 @@ exports.getItems = async (req, res) => {
       attributes: ["id", "name"],
     })
     if (!data) {
-      data = []
+      data = {
+        name: listName,
+        listItem: [],
+      }
     }
     res.status(200).send({
       status: "success",

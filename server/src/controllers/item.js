@@ -1,14 +1,14 @@
-const { Item, List } = require("../../models")
+const { item, list } = require("../../models")
 const _ = require("lodash")
 
 exports.getItems = async (req, res) => {
   try {
     const listName = _.startCase(_.toLower(req.params.listName))
     console.log(listName)
-    const data = await List.findOne({
+    const data = await list.findOne({
       where: { name: listName },
       include: {
-        model: Item,
+        model: item,
         as: "listItem",
         attributes: {
           exclude: ["createdAt"],
@@ -33,7 +33,7 @@ exports.updateItem = async (req, res) => {
   try {
     console.log(req.body)
     const id = req.params.idItem
-    await Item.update({ ...req.body }, { where: { id } })
+    await item.update({ ...req.body }, { where: { id } })
     res.status(200).send({
       status: "succes",
       message: "Item updated",
@@ -50,7 +50,7 @@ exports.updateItem = async (req, res) => {
 exports.deleteItem = async (req, res) => {
   try {
     const id = req.params.idItem
-    await Item.destroy({
+    await item.destroy({
       where: { id },
     })
     res.status(200).send({

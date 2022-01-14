@@ -4,8 +4,8 @@ const _ = require("lodash")
 exports.getItems = async (req, res) => {
   try {
     const listName = _.startCase(_.toLower(req.params.listName))
-    console.log(listName)
-    const data = await list.findOne({
+
+    let data = await list.findOne({
       where: { name: listName },
       include: {
         model: item,
@@ -16,6 +16,9 @@ exports.getItems = async (req, res) => {
       },
       attributes: ["id", "name"],
     })
+    if (!data) {
+      data = []
+    }
     res.status(200).send({
       status: "success",
       data,

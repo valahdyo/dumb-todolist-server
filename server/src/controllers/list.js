@@ -23,3 +23,25 @@ exports.createTodo = async (req, res) => {
     })
   }
 }
+
+exports.checkList = async (req, res) => {
+  try {
+    const listName = _.startCase(_.toLower(req.params.listName))
+    const newList = await list.findOne({ where: { name: listName } })
+
+    if (!newList) {
+      await list.create({ name: listName })
+    }
+
+    res.status(200).send({
+      status: "Succes",
+      message: "List created / found",
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(500).send({
+      status: "Failed",
+      message: "List check failed",
+    })
+  }
+}
